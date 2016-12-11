@@ -1,26 +1,32 @@
 import React from 'react';
 import * as firebase from 'firebase';
+// included in package.json: Animations on elements newly added to DOM
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 class App extends React.Component {
   componentWillMount() {
+    let results = [];
+    if (localStorage.getItem('results')) {
+      results = JSON.parse(localStorage.results);
+    }
+
     this.setState({
       username: localStorage.username,
-      results: [
-      ],
-      favourites: []
+      results: results,
+      favourites: [],
+      visible_section: 'favourites'
     });
     this.initializeFirebase();
 
-    // https://firebase.google.com/docs/database/web/read-and-write
-    this.database.child('favourites').on('value', function(snapshot) {
+    // Based on https://firebase.google.com/docs/database/web/read-and-write & https://firebase.google.com/docs/database/admin/retrieve-data#limit-queries
+    this.database.child('favourites').orderByChild("added_at").limitToLast(12).on('child_added', (snapshot) => {
       // data = object with results (also objects)
-      const data = snapshot.val();
-      // Transform data into array
-      const favourites = Object.values(data);
+      const fav = snapshot.val();
       this.setState({
-        favourites: favourites
+        // Didn't use unshift to add fav to favourites array because of mutability of data
+        favourites: [fav].concat(this.state.favourites.slice(0,11))
       });
-    }.bind(this));
+    });
   }
 
   // Firebase initialization (Code from firebase.com + sweet installation tutorial: http://blog.tylerbuchea.com/create-react-app-firebase-for-prototyping/)
@@ -43,13 +49,22 @@ class App extends React.Component {
       <div>
         {this.renderHeader()}
 
-        <section>
-          {this.renderResults()}
-        </section>
+        <main className={this.state.visible_section}>
+          {this.renderSegmentedControl()}
 
-        <section>
-          {this.renderFavourites()}
-        </section>
+          <section id="results">
+            {this.renderResults()}
+          </section>
+
+          <section id="faved">
+            <ReactCSSTransitionGroup
+              transitionName="favourite"
+              transitionEnterTimeout={3000}
+              transitionLeaveTimeout={100}>
+              {this.renderFavourites()}
+            </ReactCSSTransitionGroup>
+          </section>
+        </main>
       </div>
     )
   }
@@ -58,13 +73,40 @@ class App extends React.Component {
     return(
       <header>
         <h2>GitLog</h2>
+
         <form onSubmit={this.search.bind(this)}>
-          <input type="text" ref={(input) => {this.searchInput = input}} />
+          <input type="text" placeholder="Search on GitHub" ref={(input) => {this.searchInput = input}} />
+
+          <select ref={(input) => {this.languageInput = input}}>
+            <option value="">Language</option>
+            <option value="php">PHP</option>
+            <option value="ruby">Ruby</option>
+            <option value="javascript">JavaScript</option>
+            <option value="elixir">Elixir</option>
+          </select>
           <button type="submit">Search</button>
         </form>
-        <div>{this.state.username}</div>
+
+        <div id="displayName">{this.state.username}</div>
       </header>
     )
+  }
+
+  renderSegmentedControl() {
+    return(
+      <div className="segmentWrapper">
+        <div id="segment">
+          <a href="#" id="segmentResults" onClick={(e) => {e.preventDefault(); this.changeVisibility('results')}}>Results</a>
+          <a href="#" id="segmentFav" onClick={(e) => {e.preventDefault(); this.changeVisibility('favourites')}}>Favourited</a>
+        </div>
+      </div>
+    )
+  }
+
+  changeVisibility(value) {
+    this.setState({
+      visible_section: value
+    });
   }
 
   renderResults() {
@@ -73,11 +115,15 @@ class App extends React.Component {
       return(
         <div className="repo" key={repo.id}>
           <h3>{repo.name}</h3>
-          <p>{repo.language} | by {repo.owner}</p>
+          <p className="language">{repo.language} | by {repo.owner}</p>
           <p>{repo.description}</p>
-          <p><a href={repo.html_url}>VISIT REPO</a></p>
-          <p>Stars {repo.stars}</p>
-          <p><a href="#" onClick={(e) => {e.preventDefault(); this.star(repo)}}>STAR</a></p>
+          <p className="stars">Stars {repo.stars}</p>
+          <div id="links">
+            <p id="visit"><a href={repo.html_url}>VISIT REPO</a></p>
+            <a id="favourite_this" href="#" onClick={(e) => {e.preventDefault(); this.star(repo)}}>
+              <i className="fa fa-star-o" aria-hidden="true"></i>
+            </a>
+          </div>
         </div>
       )
     });
@@ -86,8 +132,8 @@ class App extends React.Component {
   renderFavourites() {
     return this.state.favourites.map(function(fav) {
       return(
-        <a className="fav" key={fav.id} href={fav.html_url}>
-          <h3>{fav.added_by} has faved {fav.name}</h3>
+        <a className="fav" key={fav.added_at} href={fav.html_url}>
+          <h3>{fav.added_by} has faved <span>{fav.name}</span></h3>
           <p>{fav.language}</p>
         </a>
       )
@@ -96,18 +142,24 @@ class App extends React.Component {
 
   star(repo) {
     repo['added_by'] = this.state.username;
-    // console.log(repo);
+    repo['added_at'] = Date.now();
     this.database.child('favourites').push(repo);
   }
 
   search(e) {
     e.preventDefault();
+    let language = this.languageInput.value;
     let term = this.searchInput.value;
+
+    if (language) {
+      term += `+language:${language}`;
+    }
+
     let url = `https://api.github.com/search/repositories?q=${term}&sort=stars&order=desc`;
 
     fetch(url).then(function(response) {
       return response.json();
-    }).then(function(json) {
+    }).then((json) => {
 
       let repos = json.items.map(function(repo) {
         return {
@@ -121,10 +173,13 @@ class App extends React.Component {
         };
       });
 
+      localStorage.setItem('results', JSON.stringify(repos));
+
       this.setState({
-        results: repos
+        results: repos,
+        visible_section: 'results'
       });
-    }.bind(this));
+    });
   }
 }
 

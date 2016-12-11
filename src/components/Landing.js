@@ -9,12 +9,16 @@ class Landing extends React.Component {
 
   render() {
     return(
-      <div>
-        <h1>GitLog</h1>
-        <form onSubmit={this.login.bind(this)}>
-          <input type="text" placeholder="Enter your GitHub username" ref={(input) => {this.usernameInput = input}} />
-          <button type="submit">It's me</button>
-        </form>
+      <div id="landing">
+        <div id="inputContainer">
+          <div className="inputWrapper">
+            <h1>GitLog</h1>
+            <form onSubmit={this.login.bind(this)} className="user">
+              <input type="text" placeholder="Username" ref={(input) => {this.usernameInput = input}} />
+              <button type="submit">It's me</button>
+            </form>
+          </div>
+        </div>
       </div>
     )
   }

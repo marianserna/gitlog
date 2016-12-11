@@ -1,3 +1,7 @@
-body {
-  background-color: #e6e6e6;
-}
+@import 'components/variables';
+@import 'components/common';
+@import 'components/landing';
+@import 'components/app';
+@import 'components/form';
+@import 'components/breakpoints';
+@import 'components/mediaQueries';
