@@ -10,6 +10,9 @@ class Landing extends React.Component {
   render() {
     return(
       <div id="landing">
+        <div id="images">
+          <img src={require('../css/images/heisencat.png')}/>
+        </div>
         <div id="inputContainer">
           <div className="inputWrapper">
             <h1>GitLog</h1>

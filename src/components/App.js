@@ -39,7 +39,7 @@ class App extends React.Component {
       messagingSenderId: "200533762278"
     };
     this.database = firebase
-      .initializeApp(config)
+      .initializeApp(config, Date.now().toString())
       .database()
       .ref();
   }
@@ -78,7 +78,7 @@ class App extends React.Component {
           <input type="text" placeholder="Search on GitHub" ref={(input) => {this.searchInput = input}} />
 
           <select ref={(input) => {this.languageInput = input}}>
-            <option value="">Language</option>
+            <option value="">Select Language</option>
             <option value="php">PHP</option>
             <option value="ruby">Ruby</option>
             <option value="javascript">JavaScript</option>
@@ -87,7 +87,7 @@ class App extends React.Component {
           <button type="submit">Search</button>
         </form>
 
-        <div id="displayName">{this.state.username}</div>
+        <div id="displayName" onClick={(e) => {e.preventDefault(); this.logOut()}}>{this.state.username}</div>
       </header>
     )
   }
@@ -101,6 +101,12 @@ class App extends React.Component {
         </div>
       </div>
     )
+  }
+
+  logOut() {
+    localStorage.removeItem('username');
+    localStorage.removeItem('results');
+    this.context.router.transitionTo('/');
   }
 
   changeVisibility(value) {
@@ -169,7 +175,7 @@ class App extends React.Component {
           html_url: repo.html_url,
           description: repo.description,
           stars: repo.watchers,
-          language: repo.language
+          language: repo.language,
         };
       });
 
@@ -181,6 +187,10 @@ class App extends React.Component {
       });
     });
   }
+}
+
+App.contextTypes = {
+  router: React.PropTypes.object
 }
 
 export default App;

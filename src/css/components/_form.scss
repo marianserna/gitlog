@@ -1,0 +1,47 @@
+
+input:focus,
+button:focus {
+  outline: none
+}
+
+input {
+  padding: 10px;
+  margin-bottom: 50px;
+  width: 100%;
+  border: 0px;
+  background-color: transparent;
+  border-bottom: 2px solid #fff;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+}
+
+input:focus, select:focus {
+  background-color: #102E37;
+}
+
+button {
+  border: 3px solid #fff;
+  width: 35%;
+  display: block;
+  margin: 0 auto;
+  height: 5rem;
+  background-color: transparent;
+  font-family: $other-font;
+  font-size: $text-size;
+  color: #fff;
+  border-radius: 50px;
+
+  &:hover {
+    background-color: #102E37;
+    cursor: pointer;
+  }
+}
+
+select {
+  cursor: pointer;
+  border-radius: 0px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
