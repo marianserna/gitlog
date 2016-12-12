@@ -1,8 +1,12 @@
-@media
- (max-width: $tablet-break) {
-  .segmentWrapper {
-    display: block;
-    margin-top: 0;
+@media(max-width: $tablet-break) {
+
+  #images {
+    img {
+      width: 50vw;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+    }
   }
 
   header {
@@ -45,6 +49,11 @@
       top: 20px;
       right: 20px;
     }
+  }
+
+  .segmentWrapper {
+    display: block;
+    margin-top: 0;
   }
 
   main {
@@ -93,19 +102,15 @@
   }
 }
 
-@media (min-width:$phone-break) and (max-width:$middle-break) {
-  #images {
-    img {
-      width: 50vw;
-      position: absolute;
-      left: 0;
-      bottom: 0;
-    }
-  }
-
+@media (max-width:$middle-break) {
   #inputContainer {
     width: 100vw;
     transform: translateX(0%);
+
+    h1 {
+      padding-bottom: 35px;
+      font-size: 6rem;
+    }
 
     .inputWrapper {
       width: 90%;

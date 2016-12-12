@@ -275,9 +275,11 @@ select {
   -moz-appearance: none; }
 
 @media (max-width: 780px) {
-  .segmentWrapper {
-    display: block;
-    margin-top: 0; }
+  #images img {
+    width: 50vw;
+    position: absolute;
+    left: 0;
+    bottom: 0; }
 
   header {
     position: static;
@@ -306,6 +308,10 @@ select {
       top: 20px;
       right: 20px; }
 
+  .segmentWrapper {
+    display: block;
+    margin-top: 0; }
+
   main {
     padding-top: 25px; }
     main #results {
@@ -331,16 +337,13 @@ select {
     main.favourites #segmentFav {
       background-color: #00303F;
       color: #fff; } }
-@media (min-width: 200px) and (max-width: 578px) {
-  #images img {
-    width: 50vw;
-    position: absolute;
-    left: 0;
-    bottom: 0; }
-
+@media (max-width: 578px) {
   #inputContainer {
     width: 100vw;
     transform: translateX(0%); }
+    #inputContainer h1 {
+      padding-bottom: 35px;
+      font-size: 6rem; }
     #inputContainer .inputWrapper {
       width: 90%; } }
 
