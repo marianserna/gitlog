@@ -159,7 +159,9 @@ main {
         font-family: "Rubik", sans-serif;
         font-size: 1.6rem;
         padding-top: 5px;
-        color: #fff; }
+        color: #fff;
+        overflow-wrap: break-word;
+        word-wrap: break-word; }
         main #results .repo p a {
           text-decoration: none;
           cursor: pointer; }
@@ -272,7 +274,7 @@ select {
   -webkit-appearance: none;
   -moz-appearance: none; }
 
-@media (min-width: 400px) and (max-width: 780px) {
+@media (max-width: 780px) {
   .segmentWrapper {
     display: block;
     margin-top: 0; }
@@ -290,17 +292,19 @@ select {
       header form input, header form select {
         margin-left: 0; }
       header form input {
-        padding: 0; }
+        padding: 0;
+        text-align: left; }
       header form select {
         margin-top: 15px;
         padding-left: 0; }
       header form button {
-        float: right;
-        margin-left: 15px;
-        margin-top: 15px;
-        margin-bottom: 25px; }
+        position: absolute;
+        top: 120px;
+        left: 20px; }
     header #displayName {
-      display: none; }
+      position: absolute;
+      top: 20px;
+      right: 20px; }
 
   main {
     padding-top: 25px; }
@@ -308,6 +312,8 @@ select {
       width: 100%; }
       main #results .repo {
         width: 90%; }
+        main #results .repo p {
+          width: 100%; }
     main #faved {
       width: 100%;
       border-left: none; }
@@ -325,7 +331,7 @@ select {
     main.favourites #segmentFav {
       background-color: #00303F;
       color: #fff; } }
-@media (min-width: 400px) and (max-width: 578px) {
+@media (min-width: 200px) and (max-width: 578px) {
   #images img {
     width: 50vw;
     position: absolute;

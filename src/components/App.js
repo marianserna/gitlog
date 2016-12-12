@@ -76,7 +76,7 @@ class App extends React.Component {
 
         <form onSubmit={this.search.bind(this)}>
           <input type="text" placeholder="Search on GitHub" ref={(input) => {this.searchInput = input}} />
-
+          
           <select ref={(input) => {this.languageInput = input}}>
             <option value="">Select Language</option>
             <option value="php">PHP</option>
@@ -87,7 +87,7 @@ class App extends React.Component {
           <button type="submit">Search</button>
         </form>
 
-        <div id="displayName" onClick={(e) => {e.preventDefault(); this.logOut()}}>{this.state.username}</div>
+        <div id="displayName" onClick={(e) => {e.preventDefault(); this.logOut()}}>Logout</div>
       </header>
     )
   }
@@ -116,7 +116,6 @@ class App extends React.Component {
   }
 
   renderResults() {
-    // I have an array of objects but I want to show an array of HTML
     return this.state.results.map((repo) => {
       return(
         <div className="repo" key={repo.id}>

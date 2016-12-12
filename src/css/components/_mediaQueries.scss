@@ -1,4 +1,5 @@
-@media (min-width:$phone-break) and (max-width: $tablet-break) {
+@media
+ (max-width: $tablet-break) {
   .segmentWrapper {
     display: block;
     margin-top: 0;
@@ -24,6 +25,7 @@
 
       input {
         padding: 0;
+        text-align: left;
       }
 
       select {
@@ -32,15 +34,16 @@
       }
 
       button {
-        float: right;
-        margin-left: 15px;
-        margin-top: 15px;
-        margin-bottom: 25px;
+        position: absolute;
+        top: 120px;
+        left: 20px;
       }
     }
 
     #displayName {
-      display: none;
+      position: absolute;
+      top: 20px;
+      right: 20px;
     }
   }
 
@@ -52,6 +55,10 @@
 
       .repo {
         width: 90%;
+
+        p {
+          width: 100%;
+        }
       }
     }
 
@@ -105,16 +112,3 @@
     }
   }
 }
-
-
-  // #landing {
-  //   height: 100vh;
-  //   background: #6ED3CF;
-  //
-  //   #images {
-  //     img {
-  //       max-width: 100vw;
-  //       max-height: 100vh;
-  //     }
-  //   }
-  // }

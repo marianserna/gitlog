@@ -152,6 +152,9 @@ main {
         font-size: 1.6rem;
         padding-top: 5px;
         color: #fff;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+
 
         a {
           text-decoration: none;
