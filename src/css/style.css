@@ -317,7 +317,8 @@ select {
     main #results {
       width: 100%; }
       main #results .repo {
-        width: 90%; }
+        width: 90%;
+        overflow: hidden; }
         main #results .repo p {
           width: 100%; }
     main #faved {
