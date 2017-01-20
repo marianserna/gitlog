@@ -1,6 +1,6 @@
 import React from 'react';
 import * as firebase from 'firebase';
-// included in package.json: Animations on elements newly added to DOM
+// npm module included in package.json: Animations on elements newly added to DOM
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 class App extends React.Component {
@@ -14,11 +14,13 @@ class App extends React.Component {
       username: localStorage.username,
       results: results,
       favourites: [],
+      // On mobile, show favourites by default
       visible_section: 'favourites'
     });
     this.initializeFirebase();
 
     // Based on https://firebase.google.com/docs/database/web/read-and-write & https://firebase.google.com/docs/database/admin/retrieve-data#limit-queries
+    // As the user pushes a new favourite to the database, it is shown on top of the other favourites
     this.database.child('favourites').orderByChild("added_at").limitToLast(12).on('child_added', (snapshot) => {
       // data = object with results (also objects)
       const fav = snapshot.val();
@@ -76,7 +78,7 @@ class App extends React.Component {
 
         <form onSubmit={this.search.bind(this)}>
           <input type="text" placeholder="Search on GitHub" ref={(input) => {this.searchInput = input}} />
-          
+
           <select ref={(input) => {this.languageInput = input}}>
             <option value="">Select Language</option>
             <option value="php">PHP</option>
